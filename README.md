@@ -11,6 +11,12 @@ For an introduction to Blender scripting with Pyton
 https://docs.blender.org/manual/en/latest/advanced/scripting/introduction.html
 
 ### 3D model output examples
+random walk via cube placement example 3D model output
+https://sketchfab.com/models/97ef663c8f6040b8aecdaca2aa87989e
+
+random walk via extrusion example 3D model output
+https://sketchfab.com/models/a04f59e37966449c98c2839999800c8a
+
 recursive backtracking algorithm example 3D model output
 https://sketchfab.com/models/7437daa03a0543d48c5eb599681d7e07
 
