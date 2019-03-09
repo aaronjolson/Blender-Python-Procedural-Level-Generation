@@ -22,8 +22,8 @@ x_pos = 1.0
 
 # Controls the distances that are moved
 # MUST BE AT LEAST 2
-x_move_distance = 2.0
-y_move_distance = 2.0
+X_MOVE_DISTANCE = 2.0
+Y_MOVE_DISTANCE = 2.0
 
 
 def generate_maze():
@@ -40,25 +40,24 @@ def get_random_direction():
 
 
 def next_move(direction):
-    global next_face
     global y_pos
     global x_pos
 
     if direction == 'up':
         place_cube()
-        y_pos += y_move_distance
+        y_pos += Y_MOVE_DISTANCE
 
     if direction == 'right':
         place_cube()
-        x_pos += x_move_distance
+        x_pos += X_MOVE_DISTANCE
 
     if direction == 'down':
         place_cube()
-        y_pos -= y_move_distance
+        y_pos -= Y_MOVE_DISTANCE
 
     if direction == 'left':
         place_cube()
-        x_pos -= x_move_distance
+        x_pos -= X_MOVE_DISTANCE
 
 
 def place_cube():
