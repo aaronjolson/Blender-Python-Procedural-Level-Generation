@@ -16,14 +16,14 @@ import bmesh
 
 ITERATIONS = 1000
 
-# Position in space
-y_pos = 1.0
-x_pos = 1.0
-
 # Controls the distances that are moved
 # MUST BE AT LEAST 2
 X_MOVE_DISTANCE = 2.0
 Y_MOVE_DISTANCE = 2.0
+
+# Position in space
+y_pos = 1.0
+x_pos = 1.0
 
 
 def generate_maze():
@@ -44,20 +44,20 @@ def next_move(direction):
     global x_pos
 
     if direction == 'up':
-        place_cube()
         y_pos += Y_MOVE_DISTANCE
+        place_cube()
 
     if direction == 'right':
-        place_cube()
         x_pos += X_MOVE_DISTANCE
+        place_cube()
 
     if direction == 'down':
-        place_cube()
         y_pos -= Y_MOVE_DISTANCE
+        place_cube()
 
     if direction == 'left':
-        place_cube()
         x_pos -= X_MOVE_DISTANCE
+        place_cube()
 
 
 def place_cube():
