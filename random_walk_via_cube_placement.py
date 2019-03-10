@@ -22,8 +22,8 @@ X_MOVE_DISTANCE = 2.0
 Y_MOVE_DISTANCE = 2.0
 
 # Position in space
-y_pos = 1.0
-x_pos = 1.0
+y_pos = 0
+x_pos = 0
 
 
 def generate_maze():
@@ -71,6 +71,7 @@ def place_cube():
 # combines the cubes into one object and removes interior faces
 def cleanup_mesh():
     # select all of the cubes
+    bpy.ops.object.mode_set(mode='OBJECT')
     bpy.ops.object.select_all(action='SELECT')
     # join all of the separate cube objects into one
     bpy.ops.object.join()
@@ -78,6 +79,7 @@ def cleanup_mesh():
     bpy.ops.object.editmode_toggle()
     # get save the mesh data into a variable
     mesh = bmesh.from_edit_mesh(bpy.context.object.data)
+    bpy.ops.mesh.select_all(action='SELECT')
     # remove overlapping verts
     bpy.ops.mesh.remove_doubles()
     # de-select everything in edit mode
