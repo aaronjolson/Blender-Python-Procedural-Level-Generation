@@ -54,10 +54,6 @@ def setup():
             grid.append(cell)
     global current
     current = grid[0]
-    print(len(grid))
-    for item in grid:
-        print(item.__dict__)
-    print()
     generate_level()
 
 
