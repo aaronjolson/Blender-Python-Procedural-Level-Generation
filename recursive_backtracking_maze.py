@@ -2,7 +2,7 @@
 Author: Aaron J. Olson
 https://aaronjolson.io
 
-Implementation of a recursive backtracking algorithm to generate levels in Blender.
+Implementation of a recursive backtracking algorithm to procedurally generate 3D levels in Blender.
 
 Example 3D model output
 https://sketchfab.com/models/7437daa03a0543d48c5eb599681d7e07
