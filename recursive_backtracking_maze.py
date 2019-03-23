@@ -12,14 +12,16 @@ import random
 import bpy
 import bmesh
 
+# total size of the maze to be created eg 10x10
 cols = 10
 rows = 10
 
-# global variables for keeping track of the grid and stack states during execution
-grid = []
-stack = []
+# global variables for keeping track of the grid and cell_stack states during execution
+cell_array = []  # keeps a flat list of all cells
+cell_stack = []  # keeps stack of the order cells have been visited
+direction_stack = []  # for keeping track of all of the moves that have been made
 
-current = None
+current_cell = None
 next_face = None
 
 # Position in space
@@ -30,8 +32,6 @@ x_pos = 1.0
 x_move_distance = 2.0
 y_move_distance = 2.0
 
-# for keeping track of all of the moves that have been made
-step_list = []
 
 # make sure an object called 'Cube' is present in the scene, else add one
 if bpy.data.objects.get('Cube'):
@@ -48,12 +48,14 @@ else:
 
 
 def setup():
-    for j in range(rows):
-        for i in range(cols):
-            cell = Cell(i, j)
-            grid.append(cell)
-    global current
-    current = grid[0]
+    global current_cell
+    # create a 2D array of cells inside of the cell_array variable
+    for y in range(rows):
+        for x in range(cols):
+            cell = Cell(x, y)
+            cell_array.append(cell)
+    # set the current position to the first cell in the cell_array
+    current_cell = cell_array[0]
     generate_level()
 
 
@@ -61,34 +63,36 @@ def generate_level():
     # flag for tracking state of when the maze is finished
     done = False
 
+    # make sure that no faces are selected
     for f in mesh.faces:
         f.select = False
 
+    # enter a long running loop that can only be exited when certain criteria are met
     while True:
-        global grid
-        global current
-        global stack
+        global cell_array
+        global current_cell
+        global cell_stack
         global next_cell
 
-        current.visited = True
+        current_cell.visited = True
 
-        # determine if the maze can move forward to a yet unreached neighboring cell
-        next_cell, direction = current.check_neighbors()
-        if next_cell:
+        # determine if the maze can move forward from the current cell to a yet unreached neighboring cell
+        next_cell, direction = current_cell.check_neighbors()
+        if next_cell:  # if an unvisited neighbor cell was found to move to
             next_mesh_move(direction)
             next_cell.visited = True
 
-            # keep track of the directions the maze has gone using the stack
-            stack.append(current)
+            # keep track of the directions the maze has gone using the cell_stack
+            cell_stack.append(current_cell)
 
-            # sets the current cell to the next cell
-            current = next_cell
+            # sets the current_cell cell to the next cell
+            current_cell = next_cell
 
-        elif len(stack) > 0:
-            current = stack.pop()
+        elif len(cell_stack) > 0:  # if there was not an unvisited cell to move to from the current cell
+            current_cell = cell_stack.pop()
             move_back()
 
-        for cell in grid:
+        for cell in cell_array:
             if cell.visited is False:
                 done = False
                 break
@@ -99,59 +103,63 @@ def generate_level():
 
 
 class Cell:
-    def __init__(self, i, j):
-        self.i = i
-        self.j = j
+    def __init__(self, x, y):
+        self.x = x  # cell's row position
+        self.y = y  # cell's column position
         self.visited = False
 
     def check_neighbors(self):
-        global grid
-        neighbors = []
-        direction = {}
-        direction_key = 0
+        global cell_array
+        neighbors = []  # keep track of the neighboring cells
+        unvisited_directions = {}  # keep track of the relative direction of unvisited neighboring cells
+        direction_key = 0  # keeps track of the number of directions available of unvisited cells
+        # for storing each individual neighbor cell, if applicable
         up = None
         right = None
         down = None
         left = None
 
-        if index(self.i, self.j - 1):
-            up = grid[index(self.i, self.j - 1)]
-        if index(self.i + 1, self.j):
-            right = grid[index(self.i + 1, self.j)]
-        if index(self.i, self.j + 1):
-            down = grid[index(self.i, self.j + 1)]
-        if index(self.i - 1, self.j):
-            left = grid[index(self.i - 1, self.j)]
+        # check each direction to determine if neighboring cells exist on the cell_array
+        if index(self.x, self.y - 1):
+            up = cell_array[index(self.x, self.y - 1)]
+        if index(self.x + 1, self.y):
+            right = cell_array[index(self.x + 1, self.y)]
+        if index(self.x, self.y + 1):
+            down = cell_array[index(self.x, self.y + 1)]
+        if index(self.x - 1, self.y):
+            left = cell_array[index(self.x - 1, self.y)]
 
+        # if the cell has a neighbor in a particular direction then check if that neighbor has been visited yet
+        # if it has not, store the
         if up and not up.visited:
             neighbors.append(up)
-            direction[direction_key] = 'up'
+            unvisited_directions[direction_key] = 'up'
             direction_key += 1
         if right and not right.visited:
             neighbors.append(right)
-            direction[direction_key] = 'right'
+            unvisited_directions[direction_key] = 'right'
             direction_key += 1
-
         if down and not down.visited:
             neighbors.append(down)
-            direction[direction_key] = 'down'
+            unvisited_directions[direction_key] = 'down'
             direction_key += 1
         if left and not left.visited:
             neighbors.append(left)
-            direction[direction_key] = 'left'
+            unvisited_directions[direction_key] = 'left'
 
         if len(neighbors) > 0:
+            # randomly return the direction of an unvisited neighbor cell
             r = int(math.floor(random.uniform(0, len(neighbors) - .000001)))
-            return neighbors[r], direction[r]
+            return neighbors[r], unvisited_directions[r]
         else:
             return None, None
 
 
-def index(i, j):
-    if i < 0 or j < 0 or i > cols - 1 or j > rows - 1:
+def index(x, y):
+    if x < 0 or y < 0 or x > cols - 1 or y > rows - 1:
         return None
     else:
-        return i + j * cols
+        return x + y * cols
 
 
 def next_mesh_move(direction):
@@ -169,7 +177,7 @@ def next_mesh_move(direction):
                 f.select = True
                 next_face = f
                 y_pos += y_move_distance * 2
-                step_list.append(direction)
+                direction_stack.append(direction)
         extrude_up()
         extrude_up()
 
@@ -181,7 +189,7 @@ def next_mesh_move(direction):
                 f.select = True
                 next_face = f
                 x_pos += x_move_distance * 2
-                step_list.append(direction)
+                direction_stack.append(direction)
         extrude_right()
         extrude_right()
 
@@ -193,7 +201,7 @@ def next_mesh_move(direction):
                 f.select = True
                 next_face = f
                 y_pos -= y_move_distance * 2
-                step_list.append(direction)
+                direction_stack.append(direction)
         extrude_down()
         extrude_down()
 
@@ -205,7 +213,7 @@ def next_mesh_move(direction):
                 f.select = True
                 next_face = f
                 x_pos -= x_move_distance * 2
-                step_list.append(direction)
+                direction_stack.append(direction)
         extrude_left()
         extrude_left()
 
@@ -214,8 +222,8 @@ def next_mesh_move(direction):
 def move_back():
     global y_pos
     global x_pos
-    global step_list
-    direction = step_list.pop()
+    global direction_stack
+    direction = direction_stack.pop()
     if direction == 'up':
         y_pos -= y_move_distance * 2
     if direction == 'right':
