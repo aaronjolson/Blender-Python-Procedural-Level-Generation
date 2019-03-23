@@ -84,7 +84,6 @@ def count_alive_neighbors(live_map, x, y):
 
 # adds cubes to the map based on the level_map matrix
 def add_cubes(cell_map):
-    # print('Making it rain!')
     matrix_size = WIDTH
     for i in range(matrix_size**2):
         y = math.floor(i / matrix_size)
