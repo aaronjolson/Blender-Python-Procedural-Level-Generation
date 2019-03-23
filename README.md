@@ -22,3 +22,6 @@ https://sketchfab.com/models/7437daa03a0543d48c5eb599681d7e07
 
 recursive division algorithm example 3D model output
 https://sketchfab.com/models/8587b464b2034485886cd094c7adf14c
+
+cellular automata / game of life algorithm example 3D model output
+https://sketchfab.com/3d-models/low-poly-procedural-cave-maze-environment-2b0ad5a175b5419ea560fa595e53e9f4
