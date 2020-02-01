@@ -103,13 +103,15 @@ def cleanup_mesh():
     # join all of the separate cube objects into one
     bpy.ops.object.join()
     # jump into edit mode
-    bpy.ops.object.editmode_toggle()
+    bpy.ops.object.mode_set(mode='EDIT')
     # get save the mesh data into a variable
     mesh = bmesh.from_edit_mesh(bpy.context.object.data)
+    # select the entire mesh
+    bpy.ops.mesh.select_all(action='SELECT')
     # remove overlapping verts
     bpy.ops.mesh.remove_doubles()
     # de-select everything in edit mode
-    bpy.ops.mesh.select_all(action='TOGGLE')
+    bpy.ops.mesh.select_all(action='DESELECT')
     # select the "interior faces"
     bpy.ops.mesh.select_interior_faces()
     # loop through and de-select all of the "floor" and "ceiling" faces by checking normals
@@ -119,7 +121,7 @@ def cleanup_mesh():
     # delete all still selected faces, leaving a hollow mesh behind
     bpy.ops.mesh.delete(type='FACE')
     # get back out of edit mode
-    bpy.ops.object.editmode_toggle()
+    bpy.ops.object.mode_set(mode='OBJECT')
 
 
 # delete everything in the scene
