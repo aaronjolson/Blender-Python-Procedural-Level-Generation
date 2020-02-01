@@ -14,11 +14,11 @@ from random import random
 import bpy
 import bmesh
 
-CHANCE_TO_START_ALIVE = 0.40
+CHANCE_TO_START_ALIVE = 0.40  # The smaller this number is, the sparser the generated maze will be
 DEATH_LIMIT = 3
 BIRTH_LIMIT = 4
 NUMBER_OF_ITERATIONS = 6  # number of times the game of life algorithm is run, consolidates mesh
-WIDTH = 80  # overall size of the maze to be generated, the higher, the bigger, but increases run time
+WIDTH = 40  # overall size of the maze to be generated, the higher, the bigger, but increases run time
 HEIGHT = WIDTH
 
 
