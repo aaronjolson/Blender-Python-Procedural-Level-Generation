@@ -29,3 +29,7 @@ https://sketchfab.com/models/8587b464b2034485886cd094c7adf14c
 
 cellular automata / game of life algorithm example 3D model output
 https://sketchfab.com/3d-models/low-poly-procedural-cave-maze-environment-2b0ad5a175b5419ea560fa595e53e9f4
+
+castle dungeon game level example output
+https://sketchfab.com/3d-models/procedurally-generated-level-with-wall-open-top-ca5adebd3fae4597b9d1cedfb81d742f - open
+https://sketchfab.com/3d-models/procedurally-generated-level-a3fc50945d13465e81d23e75417bc20f - closed
