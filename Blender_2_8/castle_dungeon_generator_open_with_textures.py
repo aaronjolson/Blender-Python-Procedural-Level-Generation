@@ -86,7 +86,7 @@ class Dungeon:
 
         self.find_farthest()
         self.mark_stairs()
-        self.render()
+        self.place_geometry()
 
     def does_collide(self, room):
         for i in range(len(self.rooms)):
@@ -216,7 +216,7 @@ class Dungeon:
         self.map[self.stairs_up["pos"]["y"]][self.stairs_up["pos"]["x"]]["t"] = 3
         self.map[self.stairs_down["pos"]["y"]][self.stairs_down["pos"]["x"]]["t"] = 4
 
-    def render(self):
+    def place_geometry(self):
         yy = 0
         for y in range(self.y_size):
             xx = 0
@@ -306,7 +306,7 @@ if __name__ == '__main__':
     cleanup_mesh()
 
     RESOURCE_BLEND_FILE = "resources.blend"
-    PATH_TO_PROJECT_DIRECTORY = "C:\\Users\\aaols\\PycharmProjects"  # TODO: change to your own location
+    PATH_TO_PROJECT_DIRECTORY = "C:\\Users\\aaron\\PycharmProjects"  # TODO: change to your own location
     PATH_TO_RESOURCE_FILE = f"\\Blender-Python-Procedural-Level-Generation\\Blender_2_8\\resources\\{RESOURCE_BLEND_FILE}\\Material"
     append_material(
         directory=f"{PATH_TO_PROJECT_DIRECTORY}{PATH_TO_RESOURCE_FILE}",
